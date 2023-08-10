@@ -1,4 +1,9 @@
-import { ListItem, ListItemButton, ListItemText } from '@mui/material';
+import {
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import { ReactNode } from 'react';
 
 interface CustomListItemProps {
@@ -18,7 +23,15 @@ const CustomListItem = ({ icon, primaryText, open }: CustomListItemProps) => {
             px: 2.5,
           }}
         >
-          {icon}
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : 'auto',
+              justifyContent: 'center',
+            }}
+          >
+            {icon}
+          </ListItemIcon>
           <ListItemText
             primary={primaryText}
             sx={{ opacity: open ? 1 : 0, padding: '8px' }}

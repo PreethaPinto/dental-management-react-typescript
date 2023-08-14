@@ -6,6 +6,7 @@ import Patients from './pages/Patients';
 import Appointments from './pages/Appointments';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Invoices from './pages/Invoices';
 
 function App() {
   const router = createBrowserRouter([
@@ -19,6 +20,7 @@ function App() {
         { path: 'appointments', element: <Appointments /> },
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
+        { path: 'invoices', element: <Invoices /> },
       ],
     },
   ]);

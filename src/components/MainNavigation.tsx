@@ -23,6 +23,7 @@ import {
   AccountCircle,
   CalendarMonth,
   DarkMode,
+  Dashboard,
   Mail,
   Medication,
   Notifications,
@@ -150,7 +151,7 @@ interface SidebarProps {
   setMode: (newMode: PaletteMode) => void;
 }
 
-export default function MainNavigation({ mode, setMode }: SidebarProps) {
+const MainNavigation = ({ mode, setMode }: SidebarProps) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -222,21 +223,33 @@ export default function MainNavigation({ mode, setMode }: SidebarProps) {
             src='https://images.pexels.com/photos/4420634/pexels-photo-4420634.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
             onClick={(e) => setOpen(true)}
           />
+          <Link to='/'>
+            <CustomListItem icon={<Dashboard />} primaryText='Dashboard' open />
+          </Link>
+
           <Link to='dentists'>
             <CustomListItem icon={<Medication />} primaryText='Dentists' open />
           </Link>
 
-          <CustomListItem icon={<People />} primaryText='Patients' open />
+          <Link to='patients'>
+            <CustomListItem icon={<People />} primaryText='Patients' open />
+          </Link>
 
-          <CustomListItem
-            icon={<CalendarMonth />}
-            primaryText='Appointments'
-            open
-          />
+          <Link to='appointments'>
+            <CustomListItem
+              icon={<CalendarMonth />}
+              primaryText='Appointments'
+              open
+            />
+          </Link>
 
-          <CustomListItem icon={<Receipt />} primaryText='Invoices' open />
+          <Link to='invoices'>
+            <CustomListItem icon={<Receipt />} primaryText='Invoices' open />
+          </Link>
         </List>
       </Drawer>
     </>
   );
-}
+};
+
+export default MainNavigation;

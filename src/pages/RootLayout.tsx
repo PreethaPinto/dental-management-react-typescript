@@ -1,35 +1,13 @@
-import { ThemeProvider } from '@emotion/react';
-import getDesignTokens from '../styles/theme';
+import { ColorModeContext, useMode } from '../styles/theme';
 import MainNavigation from '../components/MainNavigation';
 import { Outlet } from 'react-router-dom';
-import { useMemo, useState, createContext } from 'react';
-import {
-  Box,
-  CssBaseline,
-  PaletteMode,
-  Stack,
-  createTheme,
-} from '@mui/material';
+import { useState } from 'react';
+import { Box, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material';
 
 const RootLayout = () => {
-  const ColorModeContext = createContext({
-    toggleColorMode: () => {},
-  });
-  const [mode, setMode] = useState<PaletteMode>('light');
-  const colorMode = useMemo(
-    () => ({
-      // The dark mode switch would invoke this method
-      toggleColorMode: () => {
-        setMode((prevMode: PaletteMode) =>
-          prevMode === 'light' ? 'dark' : 'light'
-        );
-      },
-    }),
-    []
-  );
+  const [theme, colorMode] = useMode();
 
-  // Update the theme only if the mode changes
-  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const [mode, setMode] = useState<PaletteMode>('light');
 
   return (
     <ColorModeContext.Provider value={colorMode}>

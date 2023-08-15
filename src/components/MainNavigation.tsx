@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { ColorModeContext, tokens } from '../styles/theme';
 import {
   styled,
   useTheme,
@@ -11,7 +11,6 @@ import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -20,7 +19,6 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CustomListItem from './CustomListItem';
 import {
-  AccountCircle,
   CalendarMonth,
   DarkMode,
   Dashboard,
@@ -34,6 +32,7 @@ import {
 import { Avatar, InputBase, PaletteMode } from '@mui/material';
 import CustomIconButton from './CustomIconButton';
 import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -153,7 +152,8 @@ interface SidebarProps {
 
 const MainNavigation = ({ mode, setMode }: SidebarProps) => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const colorMode = useContext(ColorModeContext);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -179,9 +179,6 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' noWrap component='div'>
-            DENTAL APP
-          </Typography>
 
           <Search>
             <SearchIconWrapper>
@@ -196,8 +193,8 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <CustomIconButton
+              onClick={colorMode.toggleColorMode}
               icon={<DarkMode />}
-              onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
             />
 
             <CustomIconButton badge={4} icon={<Mail />} />
@@ -207,7 +204,21 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
         </Toolbar>
       </AppBar>
       <Drawer variant='permanent' open={open}>
-        <DrawerHeader>
+        <DrawerHeader
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Typography
+            variant='h6'
+            noWrap
+            component='div'
+            padding={2}
+            marginLeft={3}
+          >
+            DENTAL APP
+          </Typography>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />
@@ -217,12 +228,26 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
+        {open && (
+          <>
+            <Avatar
+              sx={{
+                width: 70,
+                height: 70,
+                alignSelf: 'center',
+                marginTop: '30px',
+              }}
+              src='https://images.pexels.com/photos/4420634/pexels-photo-4420634.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+            />
+            <Typography variant='h6' textAlign={'center'}>
+              Dr. Jane Smith
+            </Typography>
+            <Typography variant='h6' textAlign={'center'} marginBottom='10px'>
+              Principal Dentist
+            </Typography>
+          </>
+        )}
         <List>
-          <Avatar
-            sx={{ width: 30, height: 30 }}
-            src='https://images.pexels.com/photos/4420634/pexels-photo-4420634.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-            onClick={(e) => setOpen(true)}
-          />
           <Link to='/'>
             <CustomListItem icon={<Dashboard />} primaryText='Dashboard' open />
           </Link>

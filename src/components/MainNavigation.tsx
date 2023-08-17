@@ -29,7 +29,7 @@ import {
   Receipt,
   Search as SearchIcon,
 } from '@mui/icons-material';
-import { Avatar, InputBase, PaletteMode } from '@mui/material';
+import { Avatar, Button, InputBase, PaletteMode } from '@mui/material';
 import CustomIconButton from './CustomIconButton';
 import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';
@@ -203,6 +203,7 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
           </Box>
         </Toolbar>
       </AppBar>
+
       <Drawer variant='permanent' open={open}>
         <DrawerHeader
           sx={{

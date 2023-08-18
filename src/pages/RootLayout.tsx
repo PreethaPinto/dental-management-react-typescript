@@ -36,10 +36,14 @@ const RootLayout = () => {
         >
           <CssBaseline />
           <MainNavigation mode={mode} setMode={setMode} />
-          <Box component='main' sx={{ flexGrow: 1, pt: 10, pr: 8 }}>
-            <AddPatientButton onClick={handleOpen} />
+          <Box component='main' sx={{ flexGrow: 1, pt: 8, pr: 6, pl: 6 }}>
+            <Box sx={{}}>
+              <AddPatientButton onClick={handleOpen} />
+            </Box>
             <ModalWindow open={open} onClose={handleClose} />
-            <Outlet />
+            <Box sx={{ mt: 12 }}>
+              <Outlet />
+            </Box>
           </Box>
         </Box>
       </ThemeProvider>

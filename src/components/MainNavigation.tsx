@@ -250,19 +250,35 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
         )}
         <List>
           <Link to='/'>
-            <CustomListItem icon={<Dashboard />} primaryText='Dashboard' open />
+            <CustomListItem
+              onClick={handleDrawerClose}
+              icon={<Dashboard />}
+              primaryText='Dashboard'
+              open
+            />
           </Link>
 
           <Link to='dentists'>
-            <CustomListItem icon={<Medication />} primaryText='Dentists' open />
+            <CustomListItem
+              onClick={handleDrawerClose}
+              icon={<Medication />}
+              primaryText='Dentists'
+              open
+            />
           </Link>
 
           <Link to='patients'>
-            <CustomListItem icon={<People />} primaryText='Patients' open />
+            <CustomListItem
+              onClick={handleDrawerClose}
+              icon={<People />}
+              primaryText='Patients'
+              open
+            />
           </Link>
 
           <Link to='appointments'>
             <CustomListItem
+              onClick={handleDrawerClose}
               icon={<CalendarMonth />}
               primaryText='Appointments'
               open
@@ -270,7 +286,12 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
           </Link>
 
           <Link to='invoices'>
-            <CustomListItem icon={<Receipt />} primaryText='Invoices' open />
+            <CustomListItem
+              onClick={handleDrawerClose}
+              icon={<Receipt />}
+              primaryText='Invoices'
+              open
+            />
           </Link>
         </List>
       </Drawer>

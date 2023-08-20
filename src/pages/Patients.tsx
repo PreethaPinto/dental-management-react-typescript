@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import ModalWindow from '../components/ModalWindow';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -8,8 +8,18 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Button } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  IconButton,
+  Menu,
+  MenuItem,
+} from '@mui/material';
 import { Add, MoreVert } from '@mui/icons-material';
+
+const options = ['Edit', 'Delete', 'Details'];
+const ITEM_HEIGHT = 48;
 
 interface Column {
   id: 'patientName' | 'patientId' | 'age' | 'contactNumber' | 'emailId';
@@ -159,6 +169,15 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -214,7 +233,41 @@ export default function StickyHeadTable() {
                         );
                       })}
                       <TableCell align='center'>
-                        <MoreVert sx={{ cursor: 'pointer' }} />
+                        <IconButton
+                          aria-label='more'
+                          id='long-button'
+                          aria-controls={open ? 'long-menu' : undefined}
+                          aria-expanded={open ? 'true' : undefined}
+                          aria-haspopup='true'
+                          onClick={handleClick}
+                        >
+                          <MoreVert />
+                        </IconButton>
+                        <Menu
+                          id='long-menu'
+                          MenuListProps={{
+                            'aria-labelledby': 'long-button',
+                          }}
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          PaperProps={{
+                            style: {
+                              maxHeight: ITEM_HEIGHT * 4.5,
+                              width: '20ch',
+                            },
+                          }}
+                        >
+                          {options.map((option) => (
+                            <MenuItem
+                              key={option}
+                              selected={option === 'Pyxis'}
+                              onClick={handleClose}
+                            >
+                              {option}
+                            </MenuItem>
+                          ))}
+                        </Menu>
                       </TableCell>
                     </TableRow>
                   );

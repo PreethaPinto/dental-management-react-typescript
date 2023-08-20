@@ -16,6 +16,18 @@ import React from 'react';
 const AddPatientForm = () => {
   const styles = {
     display: 'flex',
+    justifyContent: 'space-around',
+    margin: '30px',
+  };
+
+  const stylesRadio = {
+    marginLeft: '50px',
+  };
+
+  const stylesButton = {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginRight: '40px',
   };
 
   const titles = [
@@ -48,59 +60,80 @@ const AddPatientForm = () => {
           PATIENT DETAILS
         </Typography>
 
-        <Box>
-          <FormControl></FormControl>
-          <div>
+        <Box sx={{ mt: 4 }}>
+          <div style={stylesRadio}>
+            <FormControl>
+              <RadioGroup
+                row
+                aria-labelledby='demo-row-radio-buttons-group-label'
+                name='row-radio-buttons-group'
+              >
+                <FormControlLabel
+                  value='male'
+                  control={<Radio />}
+                  label='Male'
+                />
+                <FormControlLabel
+                  value='female'
+                  control={<Radio />}
+                  label='Female'
+                />
+                <FormControlLabel
+                  value='other'
+                  control={<Radio />}
+                  label='Prefer not to say'
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
+          <div style={styles}>
             <TextField
               id='outlined-basic'
               label='First Name'
               variant='outlined'
+              sx={{ width: '300px' }}
             />
             <TextField
               id='outlined-basic'
               label='Last Name'
               variant='outlined'
+              sx={{ width: '300px' }}
             />
           </div>
-          <FormControl>
-            <RadioGroup
-              row
-              aria-labelledby='demo-row-radio-buttons-group-label'
-              name='row-radio-buttons-group'
-            >
-              <FormControlLabel value='male' control={<Radio />} label='Male' />
-              <FormControlLabel
-                value='female'
-                control={<Radio />}
-                label='Female'
-              />
-              <FormControlLabel
-                value='other'
-                control={<Radio />}
-                label='Prefer not to say'
-              />
-            </RadioGroup>
-          </FormControl>
+
           <div style={styles}>
             <TextField
               id='outlined-basic'
               label='Date of Birth'
               variant='outlined'
+              sx={{ width: '300px' }}
             />
-            <TextField id='outlined-basic' label='Age' variant='outlined' />
+            <TextField
+              id='outlined-basic'
+              label='Age'
+              variant='outlined'
+              sx={{ width: '300px' }}
+            />
           </div>
           <div style={styles}>
-            <TextField id='outlined-basic' label='Contact' variant='outlined' />
+            <TextField
+              id='outlined-basic'
+              label='Contact'
+              variant='outlined'
+              sx={{ width: '300px' }}
+            />
 
             <TextField
               id='outlined-basic'
               label='Email ID'
               variant='outlined'
+              sx={{ width: '300px' }}
             />
           </div>
-
-          <Button>Add Patient</Button>
-          <Button>Reset</Button>
+          <div style={stylesButton}>
+            <Button>Add Patient</Button>
+            <Button>Reset</Button>
+          </div>
         </Box>
       </Box>
     </>

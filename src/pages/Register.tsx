@@ -1,4 +1,4 @@
-const Register: React.FC<{}> = () => {
+const Register = () => {
   return <div>Register</div>;
 };
 

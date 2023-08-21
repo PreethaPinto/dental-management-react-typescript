@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -16,7 +15,7 @@ const bull = (
 );
 
 const card = (
-  <React.Fragment>
+  <>
     <CardContent>
       <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
         Word of the Day
@@ -36,7 +35,7 @@ const card = (
     <CardActions>
       <Button size='small'>Learn More</Button>
     </CardActions>
-  </React.Fragment>
+  </>
 );
 
 export default function OutlinedCard() {

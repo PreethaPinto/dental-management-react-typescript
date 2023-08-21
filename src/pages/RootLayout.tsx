@@ -2,14 +2,7 @@ import { ColorModeContext, useMode } from '../styles/theme';
 import MainNavigation from '../components/MainNavigation';
 import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  PaletteMode,
-  ThemeProvider,
-} from '@mui/material';
+import { Box, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material';
 import AddPatientButton from '../components/AddPatientButton';
 import ModalWindow from '../components/ModalWindow';
 

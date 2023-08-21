@@ -1,9 +1,6 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
-import { TextField } from '@mui/material';
 import AddPatientForm from './AddPatientForm';
 import { Close } from '@mui/icons-material';
 

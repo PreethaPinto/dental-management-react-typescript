@@ -1,4 +1,4 @@
-const Login: React.FC<{}> = () => {
+const Login = () => {
   return <div>Login</div>;
 };
 

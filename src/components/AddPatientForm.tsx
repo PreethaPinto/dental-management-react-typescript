@@ -1,11 +1,8 @@
-import { Close } from '@mui/icons-material';
 import {
   Box,
   Button,
   FormControl,
   FormControlLabel,
-  FormLabel,
-  MenuItem,
   Radio,
   RadioGroup,
   TextField,

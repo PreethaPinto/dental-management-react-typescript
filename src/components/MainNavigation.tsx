@@ -1,4 +1,4 @@
-import { ColorModeContext, tokens } from '../styles/theme';
+import { ColorModeContext } from '../styles/theme';
 import {
   styled,
   useTheme,
@@ -29,14 +29,7 @@ import {
   Receipt,
   Search as SearchIcon,
 } from '@mui/icons-material';
-import {
-  Avatar,
-  Button,
-  Grid,
-  InputBase,
-  PaletteMode,
-  Tooltip,
-} from '@mui/material';
+import { Avatar, InputBase, PaletteMode } from '@mui/material';
 import CustomIconButton from './CustomIconButton';
 import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';

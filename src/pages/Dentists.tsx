@@ -1,6 +1,9 @@
+import { useState } from 'react';
+import AddButton from '../components/AddButton';
 import CustomTable from '../components/CustomTable';
+import ModalWindow from '../components/ModalWindow';
 
-const actions = ['Add New Dentist', 'Edit', 'Delete', 'Details'];
+const actions = ['Edit', 'Delete', 'Details'];
 
 interface Column {
   id:
@@ -88,7 +91,27 @@ const rows = [
 ];
 
 const Dentists = () => {
-  return <CustomTable columns={columns} rows={rows} actions={actions} />;
+  const [openModal, setOpenModal] = useState(false);
+
+  const onClick = () => {
+    setOpenModal(true);
+  };
+
+  const onClose = () => {
+    setOpenModal(false);
+  };
+
+  return (
+    <>
+      <AddButton
+        onClick={onClick}
+        addTitle={'Add New Dentist'}
+        customSx={{ float: 'right', marginRight: 2 }}
+      />
+      <ModalWindow open={openModal} onClose={onClose} context={'dentist'} />
+      <CustomTable columns={columns} rows={rows} actions={actions} />;
+    </>
+  );
 };
 
 export default Dentists;

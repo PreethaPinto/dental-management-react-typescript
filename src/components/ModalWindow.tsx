@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import AddPatientForm from './AddPatientForm';
+import AddDetailsForm from './AddDetailsForm';
 import { Close } from '@mui/icons-material';
 
 const style = {
@@ -20,9 +20,11 @@ const style = {
 interface ModalWindowProps {
   open: boolean;
   onClose: () => void;
+  context: 'patient' | 'dentist';
 }
 
-const ModalWindow = ({ open, onClose }: ModalWindowProps) => {
+const ModalWindow = ({ open, onClose, context }: ModalWindowProps) => {
+  const isPatientContext = context === 'patient';
   return (
     <Modal
       open={open}
@@ -33,8 +35,19 @@ const ModalWindow = ({ open, onClose }: ModalWindowProps) => {
         <Button sx={{ float: 'right' }} onClick={onClose}>
           <Close />
         </Button>
-
-        <AddPatientForm />
+        {isPatientContext ? (
+          <AddDetailsForm
+            heading={'PATIENT DETAILS'}
+            buttonName={'Add New Patient'}
+            context={'patient'}
+          />
+        ) : (
+          <AddDetailsForm
+            heading={'DENTIST DETAILS'}
+            buttonName={'Add New Dentist'}
+            context={'dentist'}
+          />
+        )}
       </Box>
     </Modal>
   );

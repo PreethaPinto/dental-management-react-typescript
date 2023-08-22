@@ -1,24 +1,23 @@
 import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
 
-interface AddPatientButtonProps {
+interface AddButtonProps {
   onClick: () => void;
+  addTitle: string;
+  customSx?: object;
 }
 
-const AddPatientButton = ({ onClick }: AddPatientButtonProps) => {
+const AddButton = ({ onClick, addTitle, customSx }: AddButtonProps) => {
   return (
     <Button
       variant='outlined'
       onClick={onClick}
       startIcon={<Add />}
-      sx={{
-        float: 'right',
-        margin: 2,
-      }}
+      sx={customSx}
     >
-      Add New Patient
+      {addTitle}
     </Button>
   );
 };
 
-export default AddPatientButton;
+export default AddButton;

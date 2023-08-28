@@ -1,10 +1,11 @@
 import {
+  Box,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 interface CustomListItemProps {
   icon: ReactNode;
@@ -19,11 +20,15 @@ const CustomListItem = ({
   open,
   onClick,
 }: CustomListItemProps) => {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <>
       <ListItem disablePadding sx={{ display: 'block' }}>
         <ListItemButton
           onClick={onClick}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
           sx={{
             minHeight: 48,
             justifyContent: open ? 'initial' : 'center',
@@ -45,6 +50,19 @@ const CustomListItem = ({
           />
         </ListItemButton>
       </ListItem>
+      <Box
+        sx={{
+          display: 'block',
+          opacity: hovered ? 1 : 0,
+          padding: '8px',
+          textAlign: 'right', // Align text to the right
+          transition: 'opacity 0.3s',
+          backgroundColor: '#f0f0f0', // Background color on hover
+          marginLeft: 'auto', // Move the box to the right
+        }}
+      >
+        {primaryText}
+      </Box>
     </>
   );
 };

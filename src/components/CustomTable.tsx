@@ -12,7 +12,8 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import { MoreVert } from '@mui/icons-material';
+import { Delete, Edit, MoreVert } from '@mui/icons-material';
+import ModalWindow from './ModalWindow';
 
 const ITEM_HEIGHT = 48;
 
@@ -27,7 +28,7 @@ interface Column {
 }
 
 interface Row {
-  [key: string]: any; // You might want to refine this to match your data structure
+  [key: string]: any;
 }
 
 interface CustomTableProps {
@@ -43,6 +44,7 @@ export default function CustomTable({
 }: CustomTableProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -131,35 +133,21 @@ export default function CustomTable({
                           aria-controls={open ? 'long-menu' : undefined}
                           aria-expanded={open ? 'true' : undefined}
                           aria-haspopup='true'
+                          onClick={() => setOpenModal(true)}
+                        >
+                          <Edit />
+                        </IconButton>
+
+                        <IconButton
+                          aria-label='more'
+                          id='long-button'
+                          aria-controls={open ? 'long-menu' : undefined}
+                          aria-expanded={open ? 'true' : undefined}
+                          aria-haspopup='true'
                           onClick={handleClick}
                         >
-                          <MoreVert />
+                          <Delete />
                         </IconButton>
-                        <Menu
-                          id='long-menu'
-                          MenuListProps={{
-                            'aria-labelledby': 'long-button',
-                          }}
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: '20ch',
-                            },
-                          }}
-                        >
-                          {actions.map((action) => (
-                            <MenuItem
-                              key={action}
-                              selected={action === 'Pyxis'}
-                              onClick={handleClose}
-                            >
-                              {action}
-                            </MenuItem>
-                          ))}
-                        </Menu>
                       </TableCell>
                     </TableRow>
                   );
@@ -177,6 +165,7 @@ export default function CustomTable({
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <ModalWindow open={openModal} onClose={() => setOpenModal(false)} />
     </>
   );
 }

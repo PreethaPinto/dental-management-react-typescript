@@ -8,10 +8,11 @@ import {
   TextareaAutosize,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import FormTextField from './FormTextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Close } from '@mui/icons-material';
 
 const styles = {
   display: 'flex',
@@ -32,7 +33,7 @@ const textAreaStyle = {
 const AppointmentForm = () => {
   return (
     <>
-      <Box>
+      <Box sx={{ mt: 4, textAlign: 'center' }}>
         <Typography
           variant='h6'
           textAlign={'center'}

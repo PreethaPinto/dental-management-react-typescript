@@ -29,6 +29,9 @@ const AppointmentsModalWindow = ({ open, onClose }: OpenModalProps) => {
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
+          <Button sx={{ float: 'right' }} onClick={onClose}>
+            <Close />
+          </Button>
           <AppointmentForm />
         </Box>
       </Modal>

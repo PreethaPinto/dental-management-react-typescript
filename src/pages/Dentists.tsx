@@ -109,7 +109,7 @@ const Dentists = () => {
         customSx={{ float: 'right', marginRight: 2 }}
       />
       <ModalWindow open={openModal} onClose={onClose} context={'dentist'} />
-      <CustomTable columns={columns} rows={rows} actions={actions} />;
+      <CustomTable columns={columns} rows={rows} actions={actions} />
     </>
   );
 };

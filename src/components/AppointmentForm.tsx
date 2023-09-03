@@ -1,18 +1,7 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  TextField,
-  TextareaAutosize,
-  Typography,
-} from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import FormTextField from './FormTextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Close } from '@mui/icons-material';
 
 const styles = {
   display: 'flex',
@@ -30,7 +19,74 @@ const textAreaStyle = {
   height: '150px',
 };
 
+const initialValues = {
+  patientName: '',
+  dentistName: '',
+  time: '',
+  duration: '',
+  treatment: '',
+  notes: '',
+};
+
 const AppointmentForm = () => {
+  const [inputValue, setInputValue] = useState(initialValues);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case 'patientName':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+
+        break;
+
+      case 'dentistName':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+
+      case 'time':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+
+      case 'duration':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+
+      case 'treatment':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+    }
+  };
+
+  const handleTextAreaChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const { value } = event.target;
+    setInputValue((prevState) => ({
+      ...prevState,
+      value,
+    }));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setInputValue(initialValues);
+  };
   return (
     <>
       <Box sx={{ mt: 4, textAlign: 'center' }}>
@@ -42,52 +98,73 @@ const AppointmentForm = () => {
           Add New Appointment
         </Typography>
 
-        <Box>
-          <TextField
-            label={'Patient Name'}
-            name={'patientName'}
-            fullWidth
-            sx={{ marginBottom: '30px' }}
-          />
-          <TextField
-            label={'Dentist Name'}
-            name={'dentistName'}
-            fullWidth
-            sx={{ marginBottom: '30px' }}
-          />
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label='Appointment Date'
-              sx={{ width: '332px', marginBottom: '30px' }}
+        <form onSubmit={handleSubmit}>
+          <Box>
+            <TextField
+              label={'Patient Name'}
+              name={'patientName'}
+              value={inputValue.patientName}
+              fullWidth
+              sx={{ marginBottom: '30px' }}
+              onChange={handleInputChange}
             />
-          </LocalizationProvider>
-          <TextField
-            label={'Time'}
-            name={'time'}
-            fullWidth
-            sx={{ marginBottom: '30px' }}
-          />
-          <TextField
-            label={'Duration'}
-            name={'duration'}
-            fullWidth
-            sx={{ marginBottom: '30px' }}
-          />
+            <TextField
+              label={'Dentist Name'}
+              name={'dentistName'}
+              value={inputValue.dentistName}
+              fullWidth
+              sx={{ marginBottom: '30px' }}
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            label={'Treatment'}
-            name={'treatment'}
-            fullWidth
-            sx={{ marginBottom: '30px' }}
-          />
-          <textarea style={textAreaStyle} rows={4} placeholder='Notes' />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label='Appointment Date'
+                sx={{ width: '332px', marginBottom: '30px' }}
+              />
+            </LocalizationProvider>
+            <TextField
+              label={'Time'}
+              name={'time'}
+              value={inputValue.time}
+              fullWidth
+              sx={{ marginBottom: '30px' }}
+              onChange={handleInputChange}
+            />
+            <TextField
+              label={'Duration'}
+              name={'duration'}
+              value={inputValue.duration}
+              fullWidth
+              sx={{ marginBottom: '30px' }}
+              onChange={handleInputChange}
+            />
 
-          <div style={stylesButton}>
-            <Button type='submit'>Add</Button>
-            <Button>Reset</Button>
-          </div>
-        </Box>
+            <TextField
+              label={'Treatment'}
+              name={'treatment'}
+              value={inputValue.treatment}
+              fullWidth
+              sx={{ marginBottom: '30px' }}
+              onChange={handleInputChange}
+            />
+            <textarea
+              style={textAreaStyle}
+              name='notes'
+              value={inputValue.notes}
+              rows={4}
+              placeholder='Notes'
+              onChange={handleTextAreaChange}
+            />
+
+            <div style={stylesButton}>
+              <Button type='submit'>Add</Button>
+              <Button onClick={() => setInputValue(initialValues)}>
+                Reset
+              </Button>
+            </div>
+          </Box>
+        </form>
       </Box>
     </>
   );

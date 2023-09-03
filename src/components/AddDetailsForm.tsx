@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useState } from 'react';
 
 interface AddDetailsProps {
   heading: string;
@@ -29,34 +30,95 @@ type FormData = {
   emailID: string;
 };
 
+const styles = {
+  display: 'flex',
+  justifyContent: 'space-around',
+  margin: '30px',
+};
+
+const stylesRadio = {
+  marginLeft: '50px',
+};
+
+const stylesButton = {
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginRight: '40px',
+};
+
+const schema = z.object({
+  firstName: z.string().min(2).max(30),
+  lastName: z.string().min(2).max(30),
+  //dateOfBirth:
+  age: z.number(),
+  speciality: z.string(),
+  contactNumber: z.string().min(10).max(14),
+  emailID: z.string().email(),
+});
+
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  age: '',
+  speciality: '',
+  contactNumber: '',
+  emailId: '',
+};
 const AddDetailsForm = ({ heading, buttonName, context }: AddDetailsProps) => {
-  const styles = {
-    display: 'flex',
-    justifyContent: 'space-around',
-    margin: '30px',
-  };
-
-  const stylesRadio = {
-    marginLeft: '50px',
-  };
-
-  const stylesButton = {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginRight: '40px',
-  };
-
+  const [inputValue, setInputValue] = useState(initialValues);
   const isPatientContext = context === 'patient';
 
-  const schema = z.object({
-    firstName: z.string().min(2).max(30),
-    lastName: z.string().min(2).max(30),
-    //dateOfBirth:
-    age: z.number(),
-    speciality: z.string(),
-    contactNumber: z.string().min(10).max(14),
-    emailID: z.string().email(),
-  });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'firstName':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+
+      case 'lastName':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+
+      case 'age':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+
+      case 'speciality':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+
+      case 'contactNumber':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+
+      case 'emailId':
+        setInputValue((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        break;
+    }
+  };
+
+  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setInputValue(initialValues);
+  };
 
   return (
     <>
@@ -65,55 +127,91 @@ const AddDetailsForm = ({ heading, buttonName, context }: AddDetailsProps) => {
           {heading}
         </Typography>
 
-        <Box sx={{ mt: 4 }}>
-          <div style={stylesRadio}>
-            <FormControl>
-              <RadioGroup
-                row
-                aria-labelledby='demo-row-radio-buttons-group-label'
-                name='row-radio-buttons-group'
-              >
-                <FormControlLabel
-                  value='male'
-                  control={<Radio />}
-                  label='Male'
-                />
-                <FormControlLabel
-                  value='female'
-                  control={<Radio />}
-                  label='Female'
-                />
-                <FormControlLabel
-                  value='other'
-                  control={<Radio />}
-                  label='Prefer not to say'
-                />
-              </RadioGroup>
-            </FormControl>
-          </div>
-          <div style={styles}>
-            <FormTextField label={'First Name'} name={'firstName'} />
-            <FormTextField label={'Last Name'} name={'lastName'} />
-          </div>
+        <form onSubmit={handleSubmitForm}>
+          <Box sx={{ mt: 4 }}>
+            <div style={stylesRadio}>
+              <FormControl>
+                <RadioGroup
+                  row
+                  aria-labelledby='demo-row-radio-buttons-group-label'
+                  name='row-radio-buttons-group'
+                >
+                  <FormControlLabel
+                    value='male'
+                    control={<Radio />}
+                    label='Male'
+                  />
+                  <FormControlLabel
+                    value='female'
+                    control={<Radio />}
+                    label='Female'
+                  />
+                  <FormControlLabel
+                    value='other'
+                    control={<Radio />}
+                    label='Prefer not to say'
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
+            <div style={styles}>
+              <FormTextField
+                label={'First Name'}
+                name={'firstName'}
+                value={inputValue.firstName}
+                onChange={handleChange}
+              />
+              <FormTextField
+                label={'Last Name'}
+                name={'lastName'}
+                value={inputValue.lastName}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div style={styles}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker label='Date of Birth' sx={{ width: '300px' }} />
-            </LocalizationProvider>
-            {isPatientContext && <FormTextField label={'Age'} name={'age'} />}
-            {!isPatientContext && (
-              <FormTextField label={'Speciality'} name={'speciality'} />
-            )}
-          </div>
-          <div style={styles}>
-            <FormTextField label={'Contact Number'} name={'contactNumber'} />
-            <FormTextField label={'Email ID'} name={'emailId'} />
-          </div>
-          <div style={stylesButton}>
-            <Button type='submit'>{buttonName}</Button>
-            <Button>Reset</Button>
-          </div>
-        </Box>
+            <div style={styles}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker label='Date of Birth' sx={{ width: '300px' }} />
+              </LocalizationProvider>
+              {isPatientContext && (
+                <FormTextField
+                  label={'Age'}
+                  name={'age'}
+                  value={inputValue.age}
+                  onChange={handleChange}
+                />
+              )}
+              {!isPatientContext && (
+                <FormTextField
+                  label={'Speciality'}
+                  name={'speciality'}
+                  value={inputValue.speciality}
+                  onChange={handleChange}
+                />
+              )}
+            </div>
+            <div style={styles}>
+              <FormTextField
+                label={'Contact Number'}
+                name={'contactNumber'}
+                value={inputValue.contactNumber}
+                onChange={handleChange}
+              />
+              <FormTextField
+                label={'Email ID'}
+                name={'emailId'}
+                value={inputValue.emailId}
+                onChange={handleChange}
+              />
+            </div>
+            <div style={stylesButton}>
+              <Button type='submit'>{buttonName}</Button>
+              <Button onClick={() => setInputValue(initialValues)}>
+                Reset
+              </Button>
+            </div>
+          </Box>
+        </form>
       </Box>
     </>
   );

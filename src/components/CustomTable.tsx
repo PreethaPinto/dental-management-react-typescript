@@ -109,10 +109,10 @@ export default function CustomTable({
                 .map((row) => {
                   return (
                     <TableRow
+                      key={row.patientId}
                       hover
                       role='checkbox'
                       tabIndex={-1}
-                      key={row.patientId}
                     >
                       {columns.map((column) => {
                         const value = row[column.id];

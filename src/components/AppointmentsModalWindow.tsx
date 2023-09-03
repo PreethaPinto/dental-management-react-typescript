@@ -1,5 +1,5 @@
 import { Close } from '@mui/icons-material';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Modal } from '@mui/material';
 import React from 'react';
 import AppointmentForm from './AppointmentForm';
 

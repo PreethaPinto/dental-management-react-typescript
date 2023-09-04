@@ -7,6 +7,7 @@ import Appointments from './pages/Appointments';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Invoices from './pages/Invoices';
+import ModalWindow from './components/ModalWindow';
 
 function App() {
   const router = createBrowserRouter([
@@ -16,6 +17,7 @@ function App() {
       children: [
         { index: true, element: <Dashboard /> },
         { path: 'dentists', element: <Dentists /> },
+        { path: 'dentists/edit/:id', element: <ModalWindow /> },
         { path: 'patients', element: <Patients /> },
         { path: 'appointments', element: <Appointments /> },
         { path: 'login', element: <Login /> },

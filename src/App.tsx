@@ -17,7 +17,6 @@ function App() {
       children: [
         { index: true, element: <Dashboard /> },
         { path: 'dentists', element: <Dentists /> },
-        { path: 'dentists/edit/:id', element: <ModalWindow /> },
         { path: 'patients', element: <Patients /> },
         { path: 'appointments', element: <Appointments /> },
         { path: 'login', element: <Login /> },

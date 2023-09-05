@@ -29,10 +29,11 @@ import {
   Receipt,
   Search as SearchIcon,
 } from '@mui/icons-material';
-import { Avatar, InputBase, PaletteMode } from '@mui/material';
+import { Avatar, Button, InputBase, PaletteMode } from '@mui/material';
 import CustomIconButton from './CustomIconButton';
 import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';
+import LoginModal from './LoginModal';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -154,6 +155,7 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const [open, setOpen] = useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -200,6 +202,18 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
             <CustomIconButton badge={4} icon={<Mail />} />
 
             <CustomIconButton badge={17} icon={<Notifications />} />
+            <Button
+              sx={{ color: 'white', background: 'grey' }}
+              onClick={() => setOpenLoginModal(true)}
+            >
+              LOGIN
+            </Button>
+            <LoginModal
+              open={openLoginModal}
+              onClick={() => {
+                setOpenLoginModal(false);
+              }}
+            />
           </Box>
         </Toolbar>
       </AppBar>

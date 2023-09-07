@@ -1,10 +1,12 @@
 import {
+  Alert,
   Box,
   Button,
   FormControl,
   FormControlLabel,
   Radio,
   RadioGroup,
+  Snackbar,
   Typography,
 } from '@mui/material';
 import FormTextField from './FormTextField';
@@ -17,6 +19,7 @@ import { useState } from 'react';
 interface AddDetailsProps {
   heading: string;
   buttonName: string;
+  title: string;
   context: 'patient' | 'dentist';
 }
 
@@ -64,7 +67,14 @@ const initialValues = {
   contactNumber: '',
   emailId: '',
 };
-const AddDetailsForm = ({ heading, buttonName, context }: AddDetailsProps) => {
+
+const AddDetailsForm = ({
+  heading,
+  buttonName,
+  title,
+  context,
+}: AddDetailsProps) => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [inputValue, setInputValue] = useState(initialValues);
   const isPatientContext = context === 'patient';
 
@@ -205,7 +215,23 @@ const AddDetailsForm = ({ heading, buttonName, context }: AddDetailsProps) => {
               />
             </div>
             <div style={stylesButton}>
-              <Button type='submit'>{buttonName}</Button>
+              <Button type='submit' onClick={() => setOpenSnackbar(true)}>
+                {buttonName}
+              </Button>
+              <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={() => setOpenSnackbar(false)}
+              >
+                <Alert
+                  onClose={() => setOpenSnackbar(false)}
+                  severity='success'
+                  sx={{ width: '100%' }}
+                >
+                  {title} added successfully!
+                </Alert>
+              </Snackbar>
+
               <Button onClick={() => setInputValue(initialValues)}>
                 Reset
               </Button>

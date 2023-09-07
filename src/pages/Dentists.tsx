@@ -2,6 +2,7 @@ import { useState } from 'react';
 import AddButton from '../components/AddButton';
 import CustomTable from '../components/CustomTable';
 import ModalWindow from '../components/ModalWindow';
+import { Alert, Snackbar } from '@mui/material';
 
 const actions = ['Edit', 'Delete', 'Details'];
 
@@ -108,6 +109,7 @@ const Dentists = () => {
         addTitle={'Add New Dentist'}
         customSx={{ float: 'right', marginRight: 2 }}
       />
+
       <ModalWindow open={openModal} onClose={onClose} context={'dentist'} />
       <CustomTable columns={columns} rows={rows} actions={actions} />
     </>

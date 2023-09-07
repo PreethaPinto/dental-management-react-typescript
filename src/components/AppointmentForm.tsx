@@ -1,4 +1,11 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Snackbar,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -29,6 +36,7 @@ const initialValues = {
 };
 
 const AppointmentForm = () => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [inputValue, setInputValue] = useState(initialValues);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,6 +95,7 @@ const AppointmentForm = () => {
     event.preventDefault();
     setInputValue(initialValues);
   };
+
   return (
     <>
       <Box sx={{ mt: 4, textAlign: 'center' }}>
@@ -158,7 +167,22 @@ const AppointmentForm = () => {
             />
 
             <div style={stylesButton}>
-              <Button type='submit'>Add</Button>
+              <Button type='submit' onClick={() => setOpenSnackbar(true)}>
+                Add
+              </Button>
+              <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={() => setOpenSnackbar(false)}
+              >
+                <Alert
+                  onClose={() => setOpenSnackbar(false)}
+                  severity='success'
+                  sx={{ width: '100%' }}
+                >
+                  Appointment added successfully!
+                </Alert>
+              </Snackbar>
               <Button onClick={() => setInputValue(initialValues)}>
                 Reset
               </Button>

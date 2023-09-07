@@ -39,12 +39,14 @@ const ModalWindow = ({ open, onClose, context }: ModalWindowProps) => {
           <AddDetailsForm
             heading={'PATIENT DETAILS'}
             buttonName={'Add New Patient'}
+            title='Patient'
             context={'patient'}
           />
         ) : (
           <AddDetailsForm
             heading={'DENTIST DETAILS'}
             buttonName={'Add New Dentist'}
+            title='Dentist'
             context={'dentist'}
           />
         )}

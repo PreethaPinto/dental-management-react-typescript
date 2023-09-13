@@ -1,65 +1,14 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Grid, Stack, styled } from '@mui/material';
-
-const card = (
-  <>
-    <CardContent>
-      <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-        Total Patients
-      </Typography>
-      <Typography variant='h5' component='div'>
-        134
-      </Typography>
-    </CardContent>
-  </>
-);
-const card1 = (
-  <>
-    <CardContent>
-      <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-        New Patients
-      </Typography>
-      <Typography variant='h5' component='div'>
-        5
-      </Typography>
-    </CardContent>
-  </>
-);
-
-const card2 = (
-  <>
-    <CardContent>
-      <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-        Scheduled appointments
-      </Typography>
-      <Typography variant='h5' component='div'>
-        5
-      </Typography>
-    </CardContent>
-  </>
-);
-
-const card3 = (
-  <>
-    <CardContent>
-      <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-        Scheduled appointments
-      </Typography>
-      <Typography variant='h5' component='div'>
-        5
-      </Typography>
-    </CardContent>
-  </>
-);
+import { Grid, Stack } from '@mui/material';
+import BarChart from '../components/BarChart';
 
 export default function OutlinedCard() {
   return (
     <>
+      <Typography variant='h5'>DASHBOARD</Typography>
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={8}>
@@ -129,7 +78,9 @@ export default function OutlinedCard() {
             </Grid>
             <Grid item xs={4}>
               <Card sx={{ height: 60 + 'vh' }}>
-                <CardContent></CardContent>
+                <CardContent>
+                  <BarChart />
+                </CardContent>
               </Card>
             </Grid>
           </Grid>

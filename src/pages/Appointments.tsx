@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AddButton from '../components/AddButton';
 import AppointmentsModalWindow from '../components/AppointmentsModalWindow';
+import Calendar from '../components/Calendar';
 
 const Appointments = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -17,6 +18,7 @@ const Appointments = () => {
         customSx={{ float: 'right' }}
       />
       <AppointmentsModalWindow open={openModal} onClose={handleCloseModal} />
+      <Calendar />
     </>
   );
 };

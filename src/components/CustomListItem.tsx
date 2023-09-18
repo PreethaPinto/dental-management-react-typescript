@@ -4,6 +4,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Tooltip,
 } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
@@ -25,30 +26,36 @@ const CustomListItem = ({
   return (
     <>
       <ListItem disablePadding sx={{ display: 'block' }}>
-        <ListItemButton
-          onClick={onClick}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          sx={{
-            minHeight: 48,
-            justifyContent: open ? 'initial' : 'center',
-            px: 2.5,
-          }}
-        >
-          <ListItemIcon
+        <Tooltip title={primaryText} placement='right'>
+          <ListItemButton
+            onClick={onClick}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
             sx={{
-              minWidth: 0,
-              mr: open ? 3 : 'auto',
-              justifyContent: 'center',
+              minHeight: 48,
+              justifyContent: open ? 'initial' : 'center',
+              px: 2.5,
             }}
           >
-            {icon}
-          </ListItemIcon>
-          <ListItemText
-            primary={primaryText}
-            sx={{ opacity: open ? 1 : 0, padding: '8px' }}
-          />
-        </ListItemButton>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center',
+              }}
+            >
+              {icon}
+            </ListItemIcon>
+            <ListItemText
+              primary={primaryText}
+              sx={{
+                opacity: open ? 1 : 0,
+                padding: '8px',
+                textDecoration: 'none',
+              }}
+            />
+          </ListItemButton>
+        </Tooltip>
       </ListItem>
       <Box
         sx={{
@@ -60,9 +67,7 @@ const CustomListItem = ({
           backgroundColor: '#f0f0f0', // Background color on hover
           marginLeft: 'auto', // Move the box to the right
         }}
-      >
-        {primaryText}
-      </Box>
+      ></Box>
     </>
   );
 };

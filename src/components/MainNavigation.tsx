@@ -114,7 +114,7 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
+  // zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -169,31 +169,17 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
     <>
       <AppBar position='fixed' open={open}>
         <Toolbar>
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            onClick={handleDrawerOpen}
-            edge='start'
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder='Search…'
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder='Search…'
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </Search>
             <CustomIconButton
               onClick={colorMode.toggleColorMode}
               icon={<DarkMode />}
@@ -219,30 +205,15 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
       </AppBar>
 
       <Drawer variant='permanent' open={open}>
-        <DrawerHeader
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
+        <Typography
+          variant='h6'
+          noWrap
+          component='div'
+          align='center'
+          marginTop={2.5}
         >
-          <Typography
-            variant='h6'
-            noWrap
-            component='div'
-            padding={2}
-            marginLeft={3}
-          >
-            DENTAL APP
-          </Typography>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
+          DA
+        </Typography>
         {open && (
           <>
             <Avatar
@@ -308,6 +279,36 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
             />
           </Link>
         </List>
+        <DrawerHeader
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            position: 'absolute',
+            bottom: '15px',
+            left: '15px',
+          }}
+        >
+          <IconButton
+            color='inherit'
+            aria-label='open drawer'
+            onClick={handleDrawerOpen}
+            edge='start'
+            sx={{
+              marginRight: 5,
+              ...(open && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
       </Drawer>
     </>
   );

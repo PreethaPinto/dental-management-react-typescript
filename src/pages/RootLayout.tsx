@@ -2,9 +2,16 @@ import { ColorModeContext, useMode } from '../styles/theme';
 import MainNavigation from '../components/MainNavigation';
 import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
-import { Box, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  PaletteMode,
+  ThemeProvider,
+} from '@mui/material';
 import ModalWindow from '../components/ModalWindow';
 import AddButton from '../components/AddButton';
+import Appbar from '../components/Appbar';
 
 const RootLayout = () => {
   const [open, setOpen] = useState(false);

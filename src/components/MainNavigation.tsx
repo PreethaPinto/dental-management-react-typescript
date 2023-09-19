@@ -34,6 +34,7 @@ import CustomIconButton from './CustomIconButton';
 import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import LoginModal from './LoginModal';
+import logo from '../assets/logo.png';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -210,9 +211,13 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
           noWrap
           component='div'
           align='center'
-          marginTop={2.5}
+          marginTop={1}
         >
-          DA
+          <img
+            src={logo}
+            alt='logo'
+            style={{ height: '50px', width: '50px' }}
+          />
         </Typography>
         {open && (
           <>

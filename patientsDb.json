@@ -79,6 +79,86 @@
       "age": 15,
       "emailId": "fleur_delacour@delacour.com",
       "contact": 9012345678
+    },
+    {
+      "id": 11,
+      "firstName": "Lucius",
+      "lastName": "Malfoy",
+      "age": 44,
+      "emailId": "lucius_malfoy@malfoy.com",
+      "contact": 1324354657
+    },
+    {
+      "id": 12,
+      "firstName": "Tom",
+      "lastName": "Riddle",
+      "age": 62,
+      "emailId": "tom_riddle@riddle.com",
+      "contact": 2435465768
+    },
+    {
+      "id": 13,
+      "firstName": "Ginny",
+      "lastName": "Weasley",
+      "age": 7,
+      "emailId": "ginny_weasley@weasley.com",
+      "contact": 3546576879
+    },
+    {
+      "id": 14,
+      "firstName": "Cho",
+      "lastName": "Chang",
+      "age": 18,
+      "emailId": "cho_chang@chang.com",
+      "contact": 4657687980
+    },
+    {
+      "id": 15,
+      "firstName": "Sirius",
+      "lastName": "Black",
+      "age": 58,
+      "emailId": "sirius_black@black.com",
+      "contact": 5768798013
+    },
+    {
+      "id": 16,
+      "firstName": "Severus",
+      "lastName": "Snape",
+      "age": 49,
+      "emailId": "severus_snape@snape.com",
+      "contact": 6879801324
+    },
+    {
+      "id": 17,
+      "firstName": "Parvati",
+      "lastName": "Patil",
+      "age": 22,
+      "emailId": "parvati_patil@patil.com",
+      "contact": 7980132435
+    },
+    {
+      "id": 18,
+      "firstName": "Padma",
+      "lastName": "Patil",
+      "age": 22,
+      "emailId": "padma_patil@patil.com",
+      "contact": 8013243546
+    },
+    {
+      "id": 19,
+      "firstName": "Cedric",
+      "lastName": "Diggory",
+      "age": 36,
+      "emailId": "cedric_diggory@diggory.com",
+      "contact": 9786756453
+    },
+    {
+      "id": 20,
+      "firstName": "Remus",
+      "lastName": "Lupin",
+      "age": 84,
+      "emailId": "remus_lupin@lupin.com",
+      "contact": 8675645342
     }
   ]
 }

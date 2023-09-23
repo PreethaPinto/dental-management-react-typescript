@@ -160,5 +160,88 @@
       "emailId": "remus_lupin@lupin.com",
       "contact": 8675645342
     }
+  ],
+
+  "dentists": [
+    {
+      "id": 1,
+      "firstName": "Monica",
+      "lastName": "Geller",
+      "speciality": "General",
+      "emailId": "drmonicageller@geller.com",
+      "contact": 1234567890
+    },
+    {
+      "id": 2,
+      "firstName": "Chandler",
+      "lastName": "Bing",
+      "speciality": "Orthodontist",
+      "emailId": "drchandlerbing@bing.com",
+      "contact": 2345678901
+    },
+    {
+      "id": 3,
+      "firstName": "Rachel",
+      "lastName": "Green",
+      "speciality": "Periodontist",
+      "emailId": "drrachelgreen@green.com",
+      "contact": 3456789012
+    },
+    {
+      "id": 4,
+      "firstName": "Joey",
+      "lastName": "Tribbiani",
+      "speciality": "Pedodontist",
+      "emailId": "drjoeytribbiani@tribbiani.com",
+      "contact": 4567890123
+    },
+    {
+      "id": 5,
+      "firstName": "Phoebe",
+      "lastName": "Buffay",
+      "speciality": "Maxillofacial surgeon",
+      "emailId": "drphoebebuffay.com",
+      "contact": 5678901234
+    },
+    {
+      "id": 6,
+      "firstName": "Ross",
+      "lastName": "Geller",
+      "speciality": "General",
+      "emailId": "drrossgeller@geller.com",
+      "contact": 6789012345
+    },
+    {
+      "id": 7,
+      "firstName": "Janice",
+      "lastName": "Litwik",
+      "speciality": "Endodontist",
+      "emailId": "drjanicelitwik@litwik.com",
+      "contact": 7890123456
+    },
+    {
+      "id": 8,
+      "firstName": "Mike",
+      "lastName": "Hannigan",
+      "speciality": "Endodontist",
+      "emailId": "drmikehannigan.com",
+      "contact": 8901234567
+    },
+    {
+      "id": 9,
+      "firstName": "Carol",
+      "lastName": "Willick",
+      "speciality": "General",
+      "emailId": "drcarolwillick@willick.com",
+      "contact": 9012345678
+    },
+    {
+      "id": 10,
+      "firstName": "Susan",
+      "lastName": "Bunch",
+      "speciality": "Pedodontist",
+      "emailId": "fleur_delacour@delacour.com",
+      "contact": 1324354657
+    }
   ]
 }

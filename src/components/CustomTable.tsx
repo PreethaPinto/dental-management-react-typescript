@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -8,48 +9,30 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  IconButton,
-  Menu,
-  MenuItem,
 } from '@mui/material';
-import { Delete, Edit, MoreVert } from '@mui/icons-material';
-import ModalWindow from './ModalWindow';
-
-const ITEM_HEIGHT = 48;
+import { Delete, Edit } from '@mui/icons-material';
 
 interface Column {
   id: string;
   label: string;
   minWidth?: number;
-  align?: 'center';
-  fontWeight?: 'bold';
-  textAlign?: 'center';
-  format?: (value: number) => string;
 }
 
-interface Row {
+interface RowData {
   [key: string]: any;
 }
 
 interface CustomTableProps {
   columns: Column[];
-  rows: Row[];
-  actions: string[];
+  data: RowData[];
 }
 
-export default function CustomTable({
-  columns,
-  rows,
-  actions,
-}: CustomTableProps) {
+export default function CustomTable({ columns, data }: CustomTableProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [openModal, setOpenModal] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -60,7 +43,6 @@ export default function CustomTable({
     setPage(0);
   };
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -68,104 +50,83 @@ export default function CustomTable({
     setAnchorEl(target);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
-    <>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 900 }}>
-          <Table stickyHeader aria-label='sticky table'>
-            <TableHead>
-              <TableRow sx={{ fontWeight: 'bolder' }}>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{
-                      minWidth: column.minWidth,
-                      fontWeight: column.fontWeight,
-                      textAlign: column.textAlign,
-                    }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ height: '60vh' }}>
+        <Table stickyHeader aria-label='sticky table'>
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
                 <TableCell
-                  sx={{
-                    minWidth: 100,
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                  }}
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
                 >
-                  Action
+                  {column.label}
                 </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      key={row.patientId}
-                      hover
-                      role='checkbox'
-                      tabIndex={-1}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell
-                            key={column.id}
-                            align={column.align}
-                            sx={{ textAlign: column.textAlign }}
-                          >
-                            {value}
-                          </TableCell>
-                        );
-                      })}
-                      <TableCell align='center'>
-                        <IconButton
-                          aria-label='more'
-                          id='long-button'
-                          aria-controls={open ? 'long-menu' : undefined}
-                          aria-expanded={open ? 'true' : undefined}
-                          aria-haspopup='true'
-                          onClick={() => setOpenModal(true)}
-                        >
-                          <Edit />
-                        </IconButton>
+              ))}
+              <TableCell align='center'>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                return (
+                  <TableRow hover role='checkbox' tabIndex={-1} key={index}>
+                    {columns.map((column) => {
+                      let cellContent;
 
-                        <IconButton
-                          aria-label='more'
-                          id='long-button'
-                          aria-controls={open ? 'long-menu' : undefined}
-                          aria-expanded={open ? 'true' : undefined}
-                          aria-haspopup='true'
-                          onClick={handleClick}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component='div'
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-      <ModalWindow open={openModal} onClose={() => setOpenModal(false)} />
-    </>
+                      if (column.id === 'fullName') {
+                        const fullName = `${row.firstName} ${row.lastName}`;
+                        cellContent = fullName;
+                      } else {
+                        // Handle other cases based on column.id
+                        cellContent = row[column.id];
+                      }
+                      return (
+                        <TableCell key={column.id} align='center'>
+                          {cellContent}
+                        </TableCell>
+                      );
+                    })}
+                    <TableCell align='center'>
+                      <IconButton
+                        aria-label='more'
+                        id='long-button'
+                        aria-controls={open ? 'long-menu' : undefined}
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-haspopup='true'
+                      >
+                        <Edit />
+                      </IconButton>
+
+                      <IconButton
+                        aria-label='more'
+                        id='long-button'
+                        aria-controls={open ? 'long-menu' : undefined}
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-haspopup='true'
+                        onClick={handleClick}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component='div'
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }

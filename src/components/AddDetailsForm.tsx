@@ -15,6 +15,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState } from 'react';
+import axios from 'axios';
 
 interface AddDetailsProps {
   heading: string;
@@ -125,9 +126,31 @@ const AddDetailsForm = ({
     }
   };
 
-  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setInputValue(initialValues);
+    const apiUrl = isPatientContext
+      ? 'http://localhost:3000/patients'
+      : 'http://localhost:3000/dentists';
+
+    const data = {
+      firstName: inputValue.firstName,
+      lastName: inputValue.lastName,
+      age: isPatientContext ? inputValue.age : undefined,
+      speciality: isPatientContext ? undefined : inputValue.speciality,
+      contact: inputValue.contactNumber,
+      emailId: inputValue.emailId,
+    };
+
+    try {
+      const response = await axios.post(apiUrl, data);
+      // Handle the response as needed
+      console.log(response.data); // Assuming the server sends a response
+      setInputValue(initialValues);
+      setOpenSnackbar(true);
+    } catch (error) {
+      // Handle any errors that occur during the request
+      console.error('Error:', error);
+    }
   };
 
   return (

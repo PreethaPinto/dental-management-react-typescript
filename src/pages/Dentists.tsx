@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import CustomTable from '../components/CustomTable';
 import axios from 'axios';
+import AddButton from '../components/AddButton';
+import ModalWindow from '../components/ModalWindow';
 
 interface Dentist {
   id: number;
@@ -51,6 +53,15 @@ const columns = [
 
 export default function Dentists() {
   const [data, setData] = useState<Dentist[]>([]);
+  const [open, setOpen] = useState(false);
+  const [context, setContext] = useState<'patient' | 'dentist'>('dentist');
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     axios
@@ -59,5 +70,16 @@ export default function Dentists() {
       .catch((error) => console.log(error));
   }, []);
 
-  return <CustomTable columns={columns} data={data} />;
+  return (
+    <>
+      <AddButton
+        onClick={handleOpen}
+        addTitle={'Add New Dentist'}
+        customSx={{ float: 'right', margin: 2 }}
+      />
+
+      <ModalWindow open={open} onClose={handleClose} context={context} />
+      <CustomTable columns={columns} data={data} />
+    </>
+  );
 }

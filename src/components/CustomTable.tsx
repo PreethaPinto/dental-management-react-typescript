@@ -11,6 +11,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
+import ModalWindow from './ModalWindow';
 
 interface Column {
   id: string;
@@ -31,6 +32,10 @@ export default function CustomTable({ columns, data }: CustomTableProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [context, setContext] = useState<'patient' | 'dentist'>('dentist');
+
+  const [editId, setEditId] = useState(-1);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -50,83 +55,92 @@ export default function CustomTable({ columns, data }: CustomTableProps) {
     setAnchorEl(target);
   };
 
+  const handleEdit = (id) => {
+    setEditId(id);
+  };
+
+  const handleOpen = () => {
+    setOpenModal(true);
+  };
+  const handleClose = () => {
+    setOpenModal(false);
+  };
+
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ height: '60vh' }}>
-        <Table stickyHeader aria-label='sticky table'>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-              <TableCell align='center'>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                return (
-                  <TableRow hover role='checkbox' tabIndex={-1} key={index}>
-                    {columns.map((column) => {
-                      let cellContent;
-
-                      if (column.id === 'fullName') {
-                        const fullName = `${row.firstName} ${row.lastName}`;
-                        cellContent = fullName;
-                      } else {
-                        // Handle other cases based on column.id
-                        cellContent = row[column.id];
-                      }
-                      return (
-                        <TableCell key={column.id} align='center'>
-                          {cellContent}
-                        </TableCell>
-                      );
-                    })}
-                    <TableCell align='center'>
-                      <IconButton
-                        aria-label='more'
-                        id='long-button'
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup='true'
-                      >
-                        <Edit />
-                      </IconButton>
-
-                      <IconButton
-                        aria-label='more'
-                        id='long-button'
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup='true'
-                        onClick={handleClick}
-                      >
-                        <Delete />
-                      </IconButton>
+    <>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ height: '60vh' }}>
+          <Table stickyHeader aria-label='sticky table'>
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <>
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
                     </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component='div'
-        count={data.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+                  </>
+                ))}
+                <TableCell align='center'>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  return (
+                    <TableRow hover role='checkbox' tabIndex={-1} key={index}>
+                      {columns.map((column) => {
+                        let cellContent;
+
+                        if (column.id === 'fullName') {
+                          const fullName = `${row.firstName} ${row.lastName}`;
+                          cellContent = fullName;
+                        } else {
+                          cellContent = row[column.id];
+                        }
+                        return (
+                          <TableCell key={column.id} align='center'>
+                            {cellContent}
+                          </TableCell>
+                        );
+                      })}
+                      <TableCell align='center'>
+                        <IconButton aria-label='edit'>
+                          <Edit onClick={handleOpen} />
+                        </IconButton>
+
+                        <IconButton
+                          aria-label='more'
+                          id='long-button'
+                          aria-controls={open ? 'long-menu' : undefined}
+                          aria-expanded={open ? 'true' : undefined}
+                          aria-haspopup='true'
+                          onClick={handleClick}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component='div'
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+      <ModalWindow open={openModal} onClose={handleClose} context={context} />
+    </>
   );
 }

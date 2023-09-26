@@ -19,7 +19,7 @@ const style = {
 
 interface ModalWindowProps {
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   context?: 'patient' | 'dentist';
 }
 

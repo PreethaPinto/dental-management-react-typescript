@@ -17,6 +17,7 @@ const columns = [
   { id: 'age', label: 'Age', minWidth: 170, align: 'center' },
   { id: 'emailId', label: 'Email ID', minWidth: 170, align: 'center' },
   { id: 'contact', label: 'Contact Number', minWidth: 170, align: 'center' },
+  { id: 'actions', label: 'Actions', minWidth: 170, align: 'center' },
 ];
 
 export default function PatientTable() {

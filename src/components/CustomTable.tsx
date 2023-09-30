@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   IconButton,
   Paper,
@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import ModalWindow from './ModalWindow';
+import { Link } from 'react-router-dom';
 
 interface Column {
   id: string;
@@ -84,7 +85,6 @@ export default function CustomTable({ columns, data }: CustomTableProps) {
                     </TableCell>
                   </>
                 ))}
-                <TableCell align='center'>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -102,28 +102,29 @@ export default function CustomTable({ columns, data }: CustomTableProps) {
                         } else {
                           cellContent = row[column.id];
                         }
+
+                        // Render the cell content with an Edit button
                         return (
                           <TableCell key={column.id} align='center'>
                             {cellContent}
+                            {column.id === 'actions' && (
+                              <>
+                                <Link to={`edit/${row.id}`}>
+                                  <IconButton aria-label='edit'>
+                                    <Edit onClick={handleOpen} />
+                                  </IconButton>
+                                </Link>
+                                <IconButton
+                                  aria-label='edit'
+                                  onClick={() => handleEdit(row.id)}
+                                >
+                                  <Delete />
+                                </IconButton>
+                              </>
+                            )}
                           </TableCell>
                         );
                       })}
-                      <TableCell align='center'>
-                        <IconButton aria-label='edit'>
-                          <Edit onClick={handleOpen} />
-                        </IconButton>
-
-                        <IconButton
-                          aria-label='more'
-                          id='long-button'
-                          aria-controls={open ? 'long-menu' : undefined}
-                          aria-expanded={open ? 'true' : undefined}
-                          aria-haspopup='true'
-                          onClick={handleClick}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </TableCell>
                     </TableRow>
                   );
                 })}

@@ -16,6 +16,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState } from 'react';
 import axios from 'axios';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
 interface AddDetailsProps {
   heading: string;
@@ -68,6 +70,21 @@ const initialValues = {
   contactNumber: '',
   emailId: '',
 };
+
+const phoneRegExp =
+  /^(?:\+?(61))? ?(?:\((?=.*\)))?(0?[2-57-8])\)? ?(\d\d(?:[- ](?=\d{3})|(?!\d\d[- ]?\d[- ]))\d\d[- ]?\d[- ]?\d{3})$/;
+
+const userSchema = yup.object().shape({
+  firstName: yup.string().required('required'),
+  lastName: yup.string().required('required'),
+  age: yup.string().required('required'),
+  speciality: yup.string().required('required'),
+  contactNumber: yup
+    .string()
+    .matches(phoneRegExp, 'Phone number is not valid')
+    .required('required'),
+  emailId: yup.string().email('invalid email').required('required'),
+});
 
 const AddDetailsForm = ({
   heading,
@@ -160,107 +177,109 @@ const AddDetailsForm = ({
           {heading}
         </Typography>
 
-        <form onSubmit={handleSubmitForm}>
-          <Box sx={{ mt: 4 }}>
-            <div style={stylesRadio}>
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby='demo-row-radio-buttons-group-label'
-                  name='row-radio-buttons-group'
-                >
-                  <FormControlLabel
-                    value='male'
-                    control={<Radio />}
-                    label='Male'
-                  />
-                  <FormControlLabel
-                    value='female'
-                    control={<Radio />}
-                    label='Female'
-                  />
-                  <FormControlLabel
-                    value='other'
-                    control={<Radio />}
-                    label='Prefer not to say'
-                  />
-                </RadioGroup>
-              </FormControl>
-            </div>
-            <div style={styles}>
-              <FormTextField
-                label={'First Name'}
-                name={'firstName'}
-                value={inputValue.firstName}
-                onChange={handleChange}
-              />
-              <FormTextField
-                label={'Last Name'}
-                name={'lastName'}
-                value={inputValue.lastName}
-                onChange={handleChange}
-              />
-            </div>
+        <Formik>
+          <form onSubmit={handleSubmitForm}>
+            <Box sx={{ mt: 4 }}>
+              <div style={stylesRadio}>
+                <FormControl>
+                  <RadioGroup
+                    row
+                    aria-labelledby='demo-row-radio-buttons-group-label'
+                    name='row-radio-buttons-group'
+                  >
+                    <FormControlLabel
+                      value='male'
+                      control={<Radio />}
+                      label='Male'
+                    />
+                    <FormControlLabel
+                      value='female'
+                      control={<Radio />}
+                      label='Female'
+                    />
+                    <FormControlLabel
+                      value='other'
+                      control={<Radio />}
+                      label='Prefer not to say'
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </div>
+              <div style={styles}>
+                <FormTextField
+                  label={'First Name'}
+                  name={'firstName'}
+                  value={inputValue.firstName}
+                  onChange={handleChange}
+                />
+                <FormTextField
+                  label={'Last Name'}
+                  name={'lastName'}
+                  value={inputValue.lastName}
+                  onChange={handleChange}
+                />
+              </div>
 
-            <div style={styles}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label='Date of Birth' sx={{ width: '300px' }} />
-              </LocalizationProvider>
-              {isPatientContext && (
+              <div style={styles}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker label='Date of Birth' sx={{ width: '300px' }} />
+                </LocalizationProvider>
+                {isPatientContext && (
+                  <FormTextField
+                    label={'Age'}
+                    name={'age'}
+                    value={inputValue.age}
+                    onChange={handleChange}
+                  />
+                )}
+                {!isPatientContext && (
+                  <FormTextField
+                    label={'Speciality'}
+                    name={'speciality'}
+                    value={inputValue.speciality}
+                    onChange={handleChange}
+                  />
+                )}
+              </div>
+              <div style={styles}>
                 <FormTextField
-                  label={'Age'}
-                  name={'age'}
-                  value={inputValue.age}
+                  label={'Contact Number'}
+                  name={'contactNumber'}
+                  value={inputValue.contactNumber}
                   onChange={handleChange}
                 />
-              )}
-              {!isPatientContext && (
                 <FormTextField
-                  label={'Speciality'}
-                  name={'speciality'}
-                  value={inputValue.speciality}
+                  label={'Email ID'}
+                  name={'emailId'}
+                  value={inputValue.emailId}
                   onChange={handleChange}
                 />
-              )}
-            </div>
-            <div style={styles}>
-              <FormTextField
-                label={'Contact Number'}
-                name={'contactNumber'}
-                value={inputValue.contactNumber}
-                onChange={handleChange}
-              />
-              <FormTextField
-                label={'Email ID'}
-                name={'emailId'}
-                value={inputValue.emailId}
-                onChange={handleChange}
-              />
-            </div>
-            <div style={stylesButton}>
-              <Button type='submit' onClick={() => setOpenSnackbar(true)}>
-                {buttonName}
-              </Button>
-              <Snackbar
-                open={openSnackbar}
-                autoHideDuration={6000}
-                onClose={() => setOpenSnackbar(false)}
-              >
-                <Alert
+              </div>
+              <div style={stylesButton}>
+                <Button type='submit' onClick={() => setOpenSnackbar(true)}>
+                  {buttonName}
+                </Button>
+                <Snackbar
+                  open={openSnackbar}
+                  autoHideDuration={6000}
                   onClose={() => setOpenSnackbar(false)}
-                  severity='success'
-                  sx={{ width: '100%' }}
                 >
-                  {title} added successfully!
-                </Alert>
-              </Snackbar>
+                  <Alert
+                    onClose={() => setOpenSnackbar(false)}
+                    severity='success'
+                    sx={{ width: '100%' }}
+                  >
+                    {title} added successfully!
+                  </Alert>
+                </Snackbar>
 
-              <Button onClick={() => setInputValue(initialValues)}>
-                Reset
-              </Button>
-            </div>
-          </Box>
-        </form>
+                <Button onClick={() => setInputValue(initialValues)}>
+                  Reset
+                </Button>
+              </div>
+            </Box>
+          </form>
+        </Formik>
       </Box>
     </>
   );

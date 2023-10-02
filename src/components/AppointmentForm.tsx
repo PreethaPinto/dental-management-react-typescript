@@ -9,6 +9,8 @@ import {
 import React, { useState } from 'react';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
 const styles = {
   display: 'flex',
@@ -34,6 +36,12 @@ const initialValues = {
   treatment: '',
   notes: '',
 };
+
+const userScheme = yup.object().shape({
+  patientName: yup.string().required('required'),
+  dentistName: yup.string().required('required'),
+  time: yup.string().required('required'),
+});
 
 const AppointmentForm = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -106,89 +114,94 @@ const AppointmentForm = () => {
         >
           Add New Appointment
         </Typography>
-
-        <form onSubmit={handleSubmit}>
-          <Box>
-            <TextField
-              label={'Patient Name'}
-              name={'patientName'}
-              value={inputValue.patientName}
-              fullWidth
-              sx={{ marginBottom: '30px' }}
-              onChange={handleInputChange}
-            />
-            <TextField
-              label={'Dentist Name'}
-              name={'dentistName'}
-              value={inputValue.dentistName}
-              fullWidth
-              sx={{ marginBottom: '30px' }}
-              onChange={handleInputChange}
-            />
-
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label='Appointment Date'
-                sx={{ width: '332px', marginBottom: '30px' }}
+        <Formik
+          onSubmit={handleFormSubmit}
+          initialValues={initialValues}
+          validationSchema={userSchema}
+        >
+          <form onSubmit={handleSubmit}>
+            <Box>
+              <TextField
+                label={'Patient Name'}
+                name={'patientName'}
+                value={inputValue.patientName}
+                fullWidth
+                sx={{ marginBottom: '30px' }}
+                onChange={handleInputChange}
               />
-            </LocalizationProvider>
-            <TextField
-              label={'Time'}
-              name={'time'}
-              value={inputValue.time}
-              fullWidth
-              sx={{ marginBottom: '30px' }}
-              onChange={handleInputChange}
-            />
-            <TextField
-              label={'Duration'}
-              name={'duration'}
-              value={inputValue.duration}
-              fullWidth
-              sx={{ marginBottom: '30px' }}
-              onChange={handleInputChange}
-            />
+              <TextField
+                label={'Dentist Name'}
+                name={'dentistName'}
+                value={inputValue.dentistName}
+                fullWidth
+                sx={{ marginBottom: '30px' }}
+                onChange={handleInputChange}
+              />
 
-            <TextField
-              label={'Treatment'}
-              name={'treatment'}
-              value={inputValue.treatment}
-              fullWidth
-              sx={{ marginBottom: '30px' }}
-              onChange={handleInputChange}
-            />
-            <textarea
-              style={textAreaStyle}
-              name='notes'
-              value={inputValue.notes}
-              rows={4}
-              placeholder='Notes'
-              onChange={handleTextAreaChange}
-            />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label='Appointment Date'
+                  sx={{ width: '332px', marginBottom: '30px' }}
+                />
+              </LocalizationProvider>
+              <TextField
+                label={'Time'}
+                name={'time'}
+                value={inputValue.time}
+                fullWidth
+                sx={{ marginBottom: '30px' }}
+                onChange={handleInputChange}
+              />
+              <TextField
+                label={'Duration'}
+                name={'duration'}
+                value={inputValue.duration}
+                fullWidth
+                sx={{ marginBottom: '30px' }}
+                onChange={handleInputChange}
+              />
 
-            <div style={stylesButton}>
-              <Button type='submit' onClick={() => setOpenSnackbar(true)}>
-                Add
-              </Button>
-              <Snackbar
-                open={openSnackbar}
-                autoHideDuration={6000}
-                onClose={() => setOpenSnackbar(false)}
-              >
-                <Alert
+              <TextField
+                label={'Treatment'}
+                name={'treatment'}
+                value={inputValue.treatment}
+                fullWidth
+                sx={{ marginBottom: '30px' }}
+                onChange={handleInputChange}
+              />
+              <textarea
+                style={textAreaStyle}
+                name='notes'
+                value={inputValue.notes}
+                rows={4}
+                placeholder='Notes'
+                onChange={handleTextAreaChange}
+              />
+
+              <div style={stylesButton}>
+                <Button type='submit' onClick={() => setOpenSnackbar(true)}>
+                  Add
+                </Button>
+                <Snackbar
+                  open={openSnackbar}
+                  autoHideDuration={6000}
                   onClose={() => setOpenSnackbar(false)}
-                  severity='success'
-                  sx={{ width: '100%' }}
                 >
-                  Appointment added successfully!
-                </Alert>
-              </Snackbar>
-              <Button onClick={() => setInputValue(initialValues)}>
-                Reset
-              </Button>
-            </div>
-          </Box>
-        </form>
+                  <Alert
+                    onClose={() => setOpenSnackbar(false)}
+                    severity='success'
+                    sx={{ width: '100%' }}
+                  >
+                    Appointment added successfully!
+                  </Alert>
+                </Snackbar>
+                <Button onClick={() => setInputValue(initialValues)}>
+                  Reset
+                </Button>
+              </div>
+            </Box>
+          </form>
+        </Formik>
       </Box>
     </>
   );

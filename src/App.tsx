@@ -7,9 +7,12 @@ import Appointments from './pages/Appointments';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Invoices from './pages/Invoices';
-import Edit from './pages/Edit';
+import { ColorModeContext, useMode } from './styles/theme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 function App() {
+  const [theme, colorMode] = useMode();
+
   const router = createBrowserRouter([
     {
       path: '/',
@@ -28,7 +31,16 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <RouterProvider router={router}></RouterProvider>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </>
+  );
 }
 
 export default App;

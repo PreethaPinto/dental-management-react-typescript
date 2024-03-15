@@ -1,73 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import CustomTable from '../components/CustomTable';
-import axios from 'axios';
-import AddButton from '../components/AddButton';
-import ModalWindow from '../components/ModalWindow';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Delete, Edit } from '@mui/icons-material';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Dentist } from "../interfaces/Dentist";
+import {dentistData} from '../data/dentistData'
+import { dentistColumns } from "../columns/dentistColumns";
+import axios from "axios";
+import AddButton from "../components/AddButton";
+import ModalWindow from "../components/ModalWindow";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import { Button, Icon, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { Delete, Edit } from "@mui/icons-material";
+import DentistForm from "../components/DentistForm";
+import { FormFields } from "../components/DentistForm";
+import { C } from "@fullcalendar/core/internal-common";
 
-interface Dentist {
-  id: number;
-  firstName: string;
-  lastName: string;
-  speciality: string;
-  emailId: string;
-  contact: string;
-}
-
-const columns = [
-  {
-    id: 'id',
-    label: 'Dentist ID',
-    minWidth: 100,
-    fontWeight: 'bold',
-    align: 'center',
-  },
-  {
-    id: 'fullName',
-    label: 'Dentist Name',
-    minWidth: 170,
-    fontWeight: 'bold',
-    align: 'center',
-  },
-  {
-    id: 'speciality',
-    label: 'Speciality',
-    minWidth: 170,
-    align: 'center',
-    fontWeight: 'bold',
-  },
-  {
-    id: 'emailId',
-    label: 'Email ID',
-    minWidth: 170,
-    align: 'center',
-    fontWeight: 'bold',
-  },
-  {
-    id: 'contact',
-    label: 'Contact Number',
-    minWidth: 170,
-    align: 'center',
-    fontWeight: 'bold',
-  },
-  {
-    id: 'actions',
-    label: 'Actions',
-    minWidth: 170,
-    align: 'center',
-    fontWeight: 'bold',
-  },
-];
 
 export default function Dentists() {
   const [page, setPage] = React.useState(0);
@@ -83,42 +37,79 @@ export default function Dentists() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+
   const [data, setData] = useState<Dentist[]>([]);
-  const [open, setOpen] = useState(false);
-  const [context, setContext] = useState<'patient' | 'dentist'>('dentist');
+  const [dentistTable, setDentistTable] = useState<Dentist[]>(dentistData)
+  const [openDentistForm, setOpenModalDentistForm] = useState(false);
+  const [selectedDentist, setSelectedDentist] = useState<Dentist | null>(null)
+  const [context, setContext] = useState<"patient" | "dentist">("dentist");
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
+  const handleOpenDentistForm = () => {
+    setOpenModalDentistForm(true);
   };
 
-  useEffect(() => {
-    axios
-      .get('http://localhost:3000/dentists')
-      .then((response) => setData(response.data))
-      .catch((error) => console.log(error));
-  }, []);
+  const handleCloseDentistForm = () => {
+    setOpenModalDentistForm(false);
+  };
+
+  const handleFormSubmit = (formData: FormFields) => {
+    const newId = dentistData.length + (data.length + 1);
+    const newDentist: Dentist = {
+      id: newId,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      speciality: formData.speciality,
+      emailId: formData.emailId,
+      phone: formData.phone,
+    };
+
+    setData((prevData) => [...prevData, newDentist]);
+  };
+
+  const handleDelete = (idToDelete: number) => {
+    const updatedDentistData = dentistData.filter((row) => row.id !== idToDelete);
+    console.log(updatedDentistData)
+    setDentistTable(updatedDentistData);
+   
+    const updatedData = data.filter((row) => row.id !== idToDelete);
+    setData(updatedData);
+  }
+
+  const handleEdit = (id: number) => {
+    const selected = dentistTable.find((row) => row.id === id);
+    console.log(selected)
+
+    if (selected) {
+      setSelectedDentist(selected);
+      setOpenModalDentistForm(true)
+    }}
 
   return (
     <>
       <AddButton
-        onClick={handleOpen}
-        addTitle={'Add New Dentist'}
-        customSx={{ float: 'right', margin: 2 }}
+        onClick={handleOpenDentistForm}
+        addTitle={"Add New Dentist"}
+        customSx={{ float: "right", margin: 2 }}
       />
 
-      <ModalWindow open={open} onClose={handleClose} context={context} />
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label='sticky table'>
+      <DentistForm
+        open={openDentistForm}
+        onClose={handleCloseDentistForm}
+        onSubmitData={handleFormSubmit}
+        initialDentist={selectedDentist}
+      />
+
+      {/* <ModalWindow open={open} onClose={handleClose} context={context} /> */}
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer sx={{ maxHeight: 900 }}>
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map((column) => (
+                {dentistColumns.map((column) => (
                   <TableCell
                     key={column.id}
-                    align='center'
+                    align="center"
                     style={{ minWidth: column.minWidth }}
                   >
                     {column.label}
@@ -127,12 +118,64 @@ export default function Dentists() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data
+              {[...dentistTable, ...data]
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell align="center">{row.id}</TableCell>
+                    <TableCell align="center">
+                      {row.firstName} {row.lastName}
+                    </TableCell>
+                    <TableCell align="center">{row.speciality}</TableCell>
+                    <TableCell align="center">{row.emailId}</TableCell>
+                    <TableCell align="center">{row.phone}</TableCell>
+                    <TableCell align="center">
+                      <Button onClick={() => handleDelete(row.id)}>
+                        <DeleteIcon />
+                      </Button>
+                      <Button onClick={() => handleEdit(row.id)}>
+                        <EditIcon />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </>
+  );
+}
+
+
+
+
+
+  // useEffect(() => {
+  //   axios
+  //     .get('http://localhost:3000/dentists')
+  //     .then((response) => setData(response.data))
+  //     .catch((error) => console.log(error));
+  // }, []);
+
+  
+
+            {/* {data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
                     <TableRow hover role='checkbox' tabIndex={-1} key={index}>
-                      {columns.map((column) => {
+                      {dentistColumns.map((column) => {
                         let cellContent;
 
                         if (column.id === 'fullName') {
@@ -165,21 +208,9 @@ export default function Dentists() {
                         );
                       })}
                     </TableRow>
+                    
                   );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component='div'
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </>
-  );
-}
+                })} */}
+
+
+

@@ -1,0 +1,16 @@
+.textContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 30px;
+    gap: 30px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 40px;
+}
+
+.errors {
+    color: red;
+}

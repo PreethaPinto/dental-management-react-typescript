@@ -1,4 +1,3 @@
-import { ColorModeContext } from '../styles/theme';
 import {
   styled,
   useTheme,
@@ -154,7 +153,6 @@ interface SidebarProps {
 
 const MainNavigation = ({ mode, setMode }: SidebarProps) => {
   const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
   const [open, setOpen] = useState(false);
   const [openLoginModal, setOpenLoginModal] = useState(false);
 
@@ -182,7 +180,6 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
               />
             </Search>
             <CustomIconButton
-              onClick={colorMode.toggleColorMode}
               icon={<DarkMode />}
             />
 
@@ -216,7 +213,7 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
           <img
             src={logo}
             alt='logo'
-            style={{ height: '50px', width: '50px' }}
+            style={{ height: '60px', width: '60px' }}
           />
         </Typography>
         {open && (
@@ -275,14 +272,7 @@ const MainNavigation = ({ mode, setMode }: SidebarProps) => {
             />
           </Link>
 
-          <Link to='invoices'>
-            <CustomListItem
-              onClick={handleDrawerClose}
-              icon={<Receipt />}
-              primaryText='Invoices'
-              open
-            />
-          </Link>
+          
         </List>
         <DrawerHeader
           sx={{

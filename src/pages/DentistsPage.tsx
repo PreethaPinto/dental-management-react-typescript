@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Dentist } from "../interfaces/Dentist";
 import {dentistData} from '../data/dentistData'
 import { dentistColumns } from "../columns/dentistColumns";
-import axios from "axios";
 import AddButton from "../components/AddButton";
-import ModalWindow from "../components/ModalWindow";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,19 +11,28 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Button, Icon, IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Delete, Edit } from "@mui/icons-material";
-import DentistForm from "../components/DentistForm";
+import DentistForm, {FormMode} from "../components/DentistForm";
 import { FormFields } from "../components/DentistForm";
-import { C } from "@fullcalendar/core/internal-common";
 
 
-export default function Dentists() {
+export default function DentistsPage() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const [data, setData] = useState<Dentist[]>([]);
+  const [dentistTable, setDentistTable] = useState<Dentist[]>(dentistData)
+  const [openDentistForm, setOpenModalDentistForm] = useState(false);
+  const [selectedDentist, setSelectedDentist] = useState<Dentist | null>(null);
+  const [context, setContext] = useState<"patient" | "dentist">("dentist");
+  const [formData, setFormData] = useState<FormFields>({
+    firstName: '',
+    lastName: '',
+    speciality: '',
+    phone: 0,
+    emailId: ''
+  });
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -38,35 +44,31 @@ export default function Dentists() {
     setPage(0);
   };
 
-
-  const [data, setData] = useState<Dentist[]>([]);
-  const [dentistTable, setDentistTable] = useState<Dentist[]>(dentistData)
-  const [openDentistForm, setOpenModalDentistForm] = useState(false);
-  const [selectedDentist, setSelectedDentist] = useState<Dentist | null>(null)
-  const [context, setContext] = useState<"patient" | "dentist">("dentist");
+   const resetForm = () => {
+    setFormData({
+      firstName: "",
+      lastName: "",
+      speciality: "",
+      emailId: "",
+      phone: 0,
+    });
+  }
 
   const handleOpenDentistForm = () => {
+    resetForm();
+    setSelectedDentist(null);
     setOpenModalDentistForm(true);
+    //setFormMode(FormMode.Add)
   };
+
+ 
+
 
   const handleCloseDentistForm = () => {
-    setOpenModalDentistForm(false);
+  setOpenModalDentistForm(false);
   };
 
-  const handleFormSubmit = (formData: FormFields) => {
-    const newId = dentistData.length + (data.length + 1);
-    const newDentist: Dentist = {
-      id: newId,
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      speciality: formData.speciality,
-      emailId: formData.emailId,
-      phone: formData.phone,
-    };
-
-    setData((prevData) => [...prevData, newDentist]);
-  };
-
+  
   const handleDelete = (idToDelete: number) => {
     const updatedDentistData = dentistData.filter((row) => row.id !== idToDelete);
     console.log(updatedDentistData)
@@ -77,13 +79,57 @@ export default function Dentists() {
   }
 
   const handleEdit = (id: number) => {
-    const selected = dentistTable.find((row) => row.id === id);
+    const selected = dentistTable.find((dentist) => dentist.id === id);
+    const selectedNew = data.find((newDentist) => newDentist.id === id);
     console.log(selected)
+    console.log(selectedNew)
 
     if (selected) {
-      setSelectedDentist(selected);
-      setOpenModalDentistForm(true)
-    }}
+    setSelectedDentist(selected);
+    } else if (selectedNew) {
+     setSelectedDentist(selectedNew);
+    }  
+    setOpenModalDentistForm(true);
+    
+  }
+
+  
+  const handleFormSubmit = (formData: FormFields) => {
+    if (selectedDentist) {
+      const updatedData = data.map(dentist => {
+        if (dentist.id === selectedDentist.id) {
+          return { ...dentist, ...formData };
+        }
+        return dentist;
+      });
+      setData(updatedData);
+  
+      const updatedTable = dentistTable.map(dentist => {
+        if (dentist.id === selectedDentist.id) {
+          return { ...dentist, ...formData };
+        }
+        return dentist;
+      });
+      setDentistTable(updatedTable);
+    } else {
+      const newId = data.length > 0 ? Math.max(...data.map(dentist => dentist.id)) + 1 : 1;
+      const newDentist: Dentist = {
+        id: newId,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        speciality: formData.speciality,
+        emailId: formData.emailId,
+        phone: formData.phone,
+      };
+      setData(prevData => [...prevData, newDentist]);
+    }
+  
+    handleCloseDentistForm();
+    resetForm()
+  };
+
+
+
 
   return (
     <>
@@ -96,8 +142,9 @@ export default function Dentists() {
       <DentistForm
         open={openDentistForm}
         onClose={handleCloseDentistForm}
-        onSubmitData={handleFormSubmit}
-        initialDentist={selectedDentist}
+        onSubmitDentistFormData={handleFormSubmit}
+        initialDentist={selectedDentist || undefined}
+        formMode={selectedDentist ? FormMode.Update : FormMode.Add}
       />
 
       {/* <ModalWindow open={open} onClose={handleClose} context={context} /> */}
@@ -106,7 +153,8 @@ export default function Dentists() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {dentistColumns.map((column) => (
+                {dentistColumns
+                .map((column) => (
                   <TableCell
                     key={column.id}
                     align="center"
@@ -146,7 +194,7 @@ export default function Dentists() {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={data.length}
+          count={dentistTable.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -214,3 +262,4 @@ export default function Dentists() {
 
 
 
+        

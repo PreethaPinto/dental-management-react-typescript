@@ -4,53 +4,65 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {z} from 'zod'
 import {zodResolver} from '@hookform/resolvers/zod'
 import { style } from "../styles/ModalStyles";
-import styles from '../styles/FormStyle.module.css'
+import styles from '../styles/FormStyle.module.css';
 import { Dentist } from "../interfaces/Dentist";
 import { useEffect, useState } from "react";
+import {schema} from '../validation/dentistFormValidation'
 
-const schema = z.object({
-  firstName: z.string().nonempty("First name is required"),
-  lastName: z.string().nonempty("Last name is required"),
-  emailId: z.string().email("Invalid email format"),
-  phone: z
-  .string()
-  .refine((value) => /^\d{10}$/.test(value), {
-    message: "Phone number must 10-digits",
-  })
-  .transform((value) => parseInt(value, 10)),
-  speciality: z.string().nonempty("Speciality is required")
-})
 
 export type FormFields = z.infer<typeof schema>
 
+export enum FormMode {
+Add = 'Add',
+Update = 'Update'
+}
 
 interface DentistFormProps {
   open: boolean;
   onClose: () => void;
-  onSubmitData: (data: FormFields) => void;
+  onSubmitDentistFormData: (dentistFormData: FormFields) => void;
   initialDentist?: Dentist | null;
+  formMode: FormMode
 }
 
-const DentistForm = ({ open, onClose, onSubmitData, initialDentist }: DentistFormProps) => {
+const DentistForm = ({ open, onClose, onSubmitDentistFormData, initialDentist, formMode }: DentistFormProps) => {
   const { register, handleSubmit, reset, formState: {errors, isSubmitting} } = useForm<FormFields>({resolver: zodResolver(schema)});
   const [initialValues, setInitialValues] = useState<FormFields | undefined>();
 
+  const resetForm = () => {
+    reset({
+      firstName: '',
+      lastName: '',
+      emailId: '',
+      phone: 0,
+      speciality: ''
+    });
+  };
+
   useEffect(() => {
     if (initialDentist) {
-      setInitialValues({
+      reset({
         firstName: initialDentist.firstName,
         lastName: initialDentist.lastName,
         emailId: initialDentist.emailId,
         phone: initialDentist.phone, // Convert phone number to string
         speciality: initialDentist.speciality
-      });
+      }) 
+    } else if (formMode === FormMode.Add) {
+        reset({
+          firstName: '',
+          lastName: '',
+          emailId: '',
+          phone:0,
+          speciality: ''
+        });
     }
-  }, [initialDentist])
+  }, [initialDentist, reset])
 
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    onSubmitData(data);
-    onClose();
-    reset();  
+  const onSubmit: SubmitHandler<FormFields> = (dentistFormData) => {
+    console.log(dentistFormData)
+    onSubmitDentistFormData(dentistFormData);
+    reset();
   };
 
   const handleReset = () => {
@@ -69,8 +81,9 @@ const DentistForm = ({ open, onClose, onSubmitData, initialDentist }: DentistFor
           <Close />
         </Button>
         </div>
+        
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.textContainer} >
+        <div className={styles.textContainer}>
             <div>
             <TextField
               {...register("firstName")}
@@ -78,7 +91,7 @@ const DentistForm = ({ open, onClose, onSubmitData, initialDentist }: DentistFor
               id="outlined-basic"
               label="First Name"
               variant="outlined"
-              defaultValue={initialValues?.firstName}
+              defaultValue={initialDentist?.firstName}
             />
             {errors.firstName && (
               <div className={styles.errors}>{errors.firstName.message}</div>
@@ -92,7 +105,7 @@ const DentistForm = ({ open, onClose, onSubmitData, initialDentist }: DentistFor
               id="outlined-basic"
               label="Last Name"
               variant="outlined"
-              defaultValue={initialValues?.lastName}
+              defaultValue={initialDentist?.lastName}
             />
             {errors.lastName && (
               <div className={styles.errors}>{errors.lastName.message}</div>
@@ -108,7 +121,7 @@ const DentistForm = ({ open, onClose, onSubmitData, initialDentist }: DentistFor
               id="outlined-basic"
               label="Email ID"
               variant="outlined"
-              defaultValue={initialValues?.emailId}
+              defaultValue={initialDentist?.emailId}
             />
             {errors.emailId && (
               <div className={styles.errors}>{errors.emailId.message}</div>
@@ -124,7 +137,7 @@ const DentistForm = ({ open, onClose, onSubmitData, initialDentist }: DentistFor
               id="outlined-basic"
               label="Phone Number"
               variant="outlined"
-              defaultValue={initialValues?.phone}
+              defaultValue={initialDentist?.phone}
             />
             {errors.phone && (
             <div className={styles.errors}>{errors.phone.message}</div>)}
@@ -148,7 +161,7 @@ const DentistForm = ({ open, onClose, onSubmitData, initialDentist }: DentistFor
               id="outlined-basic"
               label="Speciality"
               variant="outlined"
-              defaultValue={initialValues?.speciality}
+              defaultValue={initialDentist?.speciality}
             />
             {errors.speciality && (
               <div className={styles.errors}>{errors.speciality.message}</div>
@@ -156,7 +169,7 @@ const DentistForm = ({ open, onClose, onSubmitData, initialDentist }: DentistFor
           </div>
           </div>
           <div className={styles.buttonContainer}>
-            <Button disabled={isSubmitting} type="submit">Add Dentist</Button>
+            <Button disabled={isSubmitting} type="submit">{formMode === FormMode.Add ? 'Add' : 'Update' } Dentist</Button>
             <Button onClick={handleReset}> Reset</Button>
           </div>
         </form>

@@ -1,34 +1,35 @@
-import { ColorModeContext, useMode } from '../styles/theme';
 import MainNavigation from '../components/MainNavigation';
 import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
 import {
-  AppBar,
   Box,
   CssBaseline,
   PaletteMode,
   ThemeProvider,
+  useTheme,
 } from '@mui/material';
-import ModalWindow from '../components/ModalWindow';
 import AddButton from '../components/AddButton';
-import Appbar from '../components/Appbar';
+import PatientForm, { FormFields } from '../components/PatientForm';
 
 const RootLayout = () => {
-  const [open, setOpen] = useState(false);
+  const [openPatientForm, setOpenPatientForm] = useState(false);
   const [context, setContext] = useState<'patient' | 'dentist'>('patient');
-  const [theme, colorMode] = useMode();
+  const theme = useTheme();
 
   const [mode, setMode] = useState<PaletteMode>('light');
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpenPatientForm = () => {
+    setOpenPatientForm(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleClosePatientForm = () => {
+    setOpenPatientForm(false);
   };
+  const handleFormSubmit = (formData: FormFields) => {
+    console.log('Patient data in root: ', formData)
+  }
+ 
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <Box
           sx={{ display: 'flex' }}
@@ -38,21 +39,22 @@ const RootLayout = () => {
           <CssBaseline />
           <MainNavigation mode={mode} setMode={setMode} />
           <Box component='main' sx={{ flexGrow: 1, pt: 8, pr: 6, pl: 6 }}>
-            <Box>
+            {/* <Box>
               <AddButton
-                onClick={handleOpen}
+                onClick={handleOpenPatientForm}
                 addTitle={'Add New Patient'}
                 customSx={{ float: 'right', margin: 2 }}
               />
-            </Box>
-            <ModalWindow open={open} onClose={handleClose} context={context} />
+            </Box> */}
+            {/* <PatientForm onSubmitPatientFormData={handleFormSubmit} open={openPatientForm} onClose={handleClosePatientForm}/> */}
+            {/* <ModalWindow open={open} onClose={handleClose} context={context} /> */}
             <Box sx={{ mt: 12 }}>
               <Outlet />
             </Box>
           </Box>
         </Box>
       </ThemeProvider>
-    </ColorModeContext.Provider>
+  
   );
 };
 
